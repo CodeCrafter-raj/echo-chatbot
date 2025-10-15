@@ -11,6 +11,14 @@ class SentryExampleFrontendError extends Error {
   }
 }
 
+/**
+ * Renders an example Next.js client page demonstrating Sentry frontend integration and connectivity checks.
+ *
+ * The page verifies SDK connectivity on mount, exposes a button that starts a Sentry span, performs a sample API request,
+ * marks when an error has been sent to Sentry, and throws a local frontend error to demonstrate reporting.
+ *
+ * @returns A React element representing the example Sentry page UI.
+ */
 export default function Page() {
   const [hasSentError, setHasSentError] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
