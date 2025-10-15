@@ -21,6 +21,11 @@ export const add=mutation({
       throw new Error("Must be signed in to add a user");
     }
 
+    const orgId=identity.orgId as string;
+
+    if(!orgId){ 
+      throw new Error("Must be in an organization to add a user");
+    }
 
     const userId = await ctx.db.insert("users",{
       name:"Abhi"

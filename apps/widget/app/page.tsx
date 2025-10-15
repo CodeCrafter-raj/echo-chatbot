@@ -11,7 +11,7 @@ export default function Page() {
   const addUser=useMutation(api.users.add)
   return (
     <div className="flex flex-col items-center justify-center min-h-svh">
-      <h1 className="text-2xl font-bold">Hello Web/App</h1>
+      <h1 className="text-2xl font-bold">Hello Widget</h1>
       <Button onClick={()=>addUser()}>Add User</Button>
       <div className="max-w-sm w-full mx-auto  ">
         <p>{JSON.stringify(users, null, 2)}</p>
