@@ -17,7 +17,7 @@ export const useVapi=()=>{
   useEffect(()=>{
 
     //Only for testing the vapi API, otherwise customers will provide their own keys
-    const vapiInstance=new Vapi("9a316e01-c679-4688-9e2a-71b6c0bc49cd");
+    const vapiInstance=new Vapi("");
     setVapi(vapiInstance);
 
     vapiInstance.on("call-start",()=>{
@@ -69,7 +69,7 @@ export const useVapi=()=>{
     if(vapi && !isConnected && !isConnecting){
       setIsConnecting(true);
       try{
-        await vapi.start('e387baca-97dd-4b36-b51a-01e3efb92fd7');
+        await vapi.start('');
       }catch(error){
         console.error("Failed to start Vapi call:",error);
         setIsConnecting(false);
