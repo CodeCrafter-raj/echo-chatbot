@@ -56,8 +56,7 @@ const createContanctSession=useMutation(api.public.contanctSession.create);
     };
 
     const contanctSessionId=await createContanctSession({
-      name:values.name,
-      email:values.email,
+      ...values,
       organizationId,
       metadata,
     });
