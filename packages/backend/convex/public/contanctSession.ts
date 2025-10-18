@@ -35,3 +35,21 @@ export const create=mutation({
     return contanctSessionsId;
   }
 });
+
+export const validate=mutation({
+  args:{
+    contanctSessionsId:v.id("contanctSessions"),
+  },  handler:async(ctx,args)=>{
+
+    const contanctSession=await ctx.db.get(args.contanctSessionsId);
+    if(!contanctSession){
+      return {valid:false, reason:"Not found"};
+    }
+
+    if(contanctSession.expiresAt<Date.now()){
+      return {valid:false, reason:"Contanct Session Expired"};
+    }
+
+    return {valid:true,contanctSession};
+},
+});

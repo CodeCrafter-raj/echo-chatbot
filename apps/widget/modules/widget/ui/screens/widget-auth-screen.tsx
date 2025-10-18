@@ -16,6 +16,8 @@ import { useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
 import { userAgent } from "next/server";
 import { Doc } from "@workspace/backend/_generated/dataModel";
+import { useAtom, useAtomValue , useSetAtom } from "jotai";
+import { contactSessionIdAtomFamily, organizationIdAtom } from "../../atoms/widget-atoms";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -24,9 +26,14 @@ const formSchema = z.object({
 
 
 //Temporary test organizationId
-const organizationId = "0000";
+// const organizationId = "0000";
 
 export const WidgetAuthScreen = () => {
+
+  const organizationId=useAtomValue(organizationIdAtom);
+
+  const setContanctSessionId=useSetAtom(contactSessionIdAtomFamily(organizationId || ""));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,9 +67,11 @@ const createContanctSession=useMutation(api.public.contanctSession.create);
       organizationId,
       metadata,
     });
-    console.log("Contanct Session ID:",contanctSessionId);
+    // console.log("Contanct Session ID:",contanctSessionId);
     //console.log(values);
     // Add your authentication/API logic here
+
+    setContanctSessionId(contanctSessionId);
   };
 
   return (
