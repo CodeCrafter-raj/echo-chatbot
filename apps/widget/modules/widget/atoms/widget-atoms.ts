@@ -12,11 +12,13 @@ export const organizationIdAtom=atom<string|null>(null);
 //organization-scoped contanct session atom
 export const contactSessionIdAtomFamily=atomFamily((organizationId:string)=>
   {
-    return atomWithStorage<Id<"contanctSessions"> | null>(`${CONTANCT_SESSION_KEY}_${organizationId}`, null)
+    return atomWithStorage<Id<"contactSessions"> | null>(`${CONTANCT_SESSION_KEY}_${organizationId}`, null)
   
   })
 
-const contactSessionId=atomWithStorage("some_key", null);
+// const contactSessionId=atomWithStorage("some_key", null);
 //Error
 export const errorMessageAtom=atom<string |null>(null);
 export const loadingMessageAtom=atom<string | null>(null);
+
+export const conversationIdAtom=atom<Id<"conversations">|null>(null);

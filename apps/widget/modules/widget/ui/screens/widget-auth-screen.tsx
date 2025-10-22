@@ -4,8 +4,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel, // Imported but not used
-  FormMessage, // Imported but not used
+  FormLabel,
+  FormMessage,
 } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
 import { Button } from "@workspace/ui/components/button";
@@ -14,64 +14,53 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
-import { userAgent } from "next/server";
 import { Doc } from "@workspace/backend/_generated/dataModel";
-import { useAtom, useAtomValue , useSetAtom } from "jotai";
-import { contactSessionIdAtomFamily, organizationIdAtom } from "../../atoms/widget-atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  contactSessionIdAtomFamily,
+  organizationIdAtom,
+} from "../../atoms/widget-atoms";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().min(1, "Email is required").email("Not a valid email"),
 });
 
-
-//Temporary test organizationId
-// const organizationId = "0000";
-
 export const WidgetAuthScreen = () => {
-
-  const organizationId=useAtomValue(organizationIdAtom);
-
-  const setContanctSessionId=useSetAtom(contactSessionIdAtomFamily(organizationId || ""));
+  const organizationId = useAtomValue(organizationIdAtom);
+  const setContactSessionId = useSetAtom(
+    contactSessionIdAtomFamily(organizationId || "")
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-    },
+    defaultValues: { name: "", email: "" },
   });
 
-const createContanctSession=useMutation(api.public.contanctSession.create);
+  const createContactSession = useMutation(api.public.contactSession.create);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if(!organizationId)
-    {
-      return
-    }
+    if (!organizationId) return;
 
-    const metadata : Doc<"contanctSessions">["metadata"]= {
-      userAgent:navigator.userAgent,
-      language:navigator.language,
-      languages:navigator.languages?.join(","),
-      platform:navigator.platform,
-      vendor:navigator.vendor,
-      screenResolution:`${window.screen.width}x${window.screen.height}`,
-      timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,
-      timeszoneOffset:new Date().getTimezoneOffset(),
-      cookieEnabled:navigator.cookieEnabled,
+    const metadata: Doc<"contactSessions">["metadata"] = {
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      languages: navigator.languages?.join(","),
+      platform: navigator.platform,
+      vendor: navigator.vendor,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timeszoneOffset: new Date().getTimezoneOffset(),
+      cookieEnabled: navigator.cookieEnabled,
     };
 
-    const contanctSessionId=await createContanctSession({
+    const contactSessionId = await createContactSession({
       ...values,
       organizationId,
       metadata,
     });
-    // console.log("Contanct Session ID:",contanctSessionId);
-    //console.log(values);
-    // Add your authentication/API logic here
 
-    setContanctSessionId(contanctSessionId);
+    setContactSessionId(contactSessionId);
   };
 
   return (
@@ -82,18 +71,19 @@ const createContanctSession=useMutation(api.public.contanctSession.create);
           <p className="text-lg">Let&apos;s get you started</p>
         </div>
       </WidgetHeader>
+
       <Form {...form}>
         <form
           className="flex flex-1 flex-col gap-y-4 px-4 py-6"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          {/* --- Name Field (Fixed) --- */}
+          {/* --- Name Field --- */}
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Your Name</FormLabel> {/* ADDED: FormLabel */}
+                <FormLabel>Your Name</FormLabel>
                 <FormControl>
                   <Input
                     className="h-10 bg-background"
@@ -102,12 +92,12 @@ const createContanctSession=useMutation(api.public.contanctSession.create);
                     {...field}
                   />
                 </FormControl>
-                <FormMessage /> {/* ADDED: FormMessage for validation errors */}
+                <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* --- Email Field (MISSING, ADDED) --- */}
+          {/* --- Email Field --- */}
           <FormField
             control={form.control}
             name="email"
@@ -127,8 +117,11 @@ const createContanctSession=useMutation(api.public.contanctSession.create);
             )}
           />
 
-          {/* --- Submit Button (MISSING, ADDED) --- */}
-          <Button disabled={ form.formState.isSubmitting} type="submit" className="mt-4 size-lg">
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            className="mt-4 size-lg"
+          >
             Continue
           </Button>
         </form>
@@ -136,22 +129,6 @@ const createContanctSession=useMutation(api.public.contanctSession.create);
     </>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
