@@ -22,7 +22,7 @@ export const WidgetSelectionScreen = () => {
     contactSessionIdAtomFamily(organizationId || "")
   );
 
-  const createConversation=useMutation(api.public.conversations.create);
+  const createConversation=useMutation(api.public.conversation.create);
   const [isPending, setIsPending]=useState(false);
 
   const handleNewConversation=async()=>{
