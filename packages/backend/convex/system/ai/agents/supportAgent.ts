@@ -6,4 +6,4 @@ export const supportAgent=new Agent(components.agent,{
   chat: openai.chat("gpt-4o-mini"),
   instructions:"You are a customer support Agent"
 
-})
+});
